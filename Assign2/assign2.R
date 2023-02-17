@@ -1,0 +1,27 @@
+p_data <- read.csv(file = "/Users/zuowen/Documents/BU Spring 2023/CS555 Machine Learning/Homework/Assign2/p.csv", header = TRUE)
+nonp_data <- read.csv(file = "/Users/zuowen/Documents/BU Spring 2023/CS555 Machine Learning/Homework/Assign2/non-p.csv", header = TRUE)
+hist_p <- c(p_data$X0)
+hist_nonp <- c(nonp_data$X0)
+hist(hist_p, breaks = 5, xlab = "Calories", main = "Participants", col = "forestgreen")
+hist(hist_nonp, breaks = 5, xlab = "Calories", main = "Non Participants", col = "forestgreen")
+summary(nonp_data)
+parti <- unlist(p_data, use.names = FALSE)
+parti <- subset(parti,parti!="NA")
+nparti <- unlist(nonp_data,use.names = FALSE)
+nparti <- subset(nparti,nparti !="NA")
+t.test(parti, mu = 425, alternative="two.sided", conf.level=0.95)
+t.test(nparti, mu=mean(nparti), alternative="two.sided", conf.level = 0.90)
+t.test(parti, nparti, alternative="greater", conf.level=0.95)
+t <- (mean(parti) - 425 )/ (sd(parti)/sqrt(length(parti)))
+t
+mean(parti)
+mean(nparti)
+sd(parti)
+sd(nparti)
+length(parti)
+length(nparti)
+
+s <- (106.17/100)/(9/sqrt(42))
+s
+u <- 1-cdf(1.879)
+u
