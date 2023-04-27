@@ -26,20 +26,6 @@ The following statistical methods will be used in order to help the writer to dr
 
 *Report your results.*
 
-Overall 
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

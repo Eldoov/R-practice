@@ -87,7 +87,7 @@ removeOutlier <- function(data, category){
 ###################################
 
 ### Read data into R / clean the data
-df <- read.csv('/R-practice/Term Project/dataset/world_happiness.csv', header = TRUE, stringsAsFactors = FALSE)
+df <- read.csv('/Users/zuowen/Documents/GitHub/R-practice/Term Project/dataset/world_happiness.csv', header = TRUE, stringsAsFactors = FALSE)
 df <- subset(df, select = -c(Country.or.region, Overall.rank)) # Overall Rank is same with Score
 df <- as.data.frame(lapply(df, as.numeric))
 df <- na.omit(df)
@@ -178,22 +178,27 @@ summary(GDP.per.capita)
 rich <- subset(df, GDP.per.capita >= 1.161)
 poor <- subset(df, GDP.per.capita <= 0.6045)
 df2 <- df
+df2$rich.lv <- with(df, ifelse(GDP.per.capita >= 1.161, 1,
+                            ifelse(GDP.per.capita >= 0.9595, 2,
+                                   ifelse(GDP.per.capita > 0.6045, 3, 4))))
 df2$rich <- with(df, ifelse(GDP.per.capita >= 1.161, 'Rich',
                             ifelse(GDP.per.capita >= 0.9595, 'Above Ave',
                                    ifelse(GDP.per.capita > 0.6045, 'Below Ave', 'Poor'))))
+write.csv(df2, "/Users/zuowen/Documents/BU Spring 2023/CS555 Machine Learning/Homework/Term Project/rich.csv", row.names=FALSE)
 
+# Hypothesis (Overall happiness and wealth)
 # Two sample mean test (overall happiness and wealth)
 t.test(rich$Score, poor$Score)
 # Anova
-# (Overall happiness and wealth)
 rich.aov <- aov(Score ~ rich, data=df2)
 summary(rich.aov)
 TukeyHSD(rich.aov)
-# (Generosity and wealth)
+
+# Hypothesis (Generosity and wealth)
+t.test(rich$Generosity, poor$Generosity)
 rich2.aov <- aov(Generosity ~ rich, data=df2)
 summary(rich2.aov)
 TukeyHSD(rich2.aov)
-
 
 # Separate data into two catergories: free and not free
 summary(Freedom.to.make.life.choices)
@@ -203,9 +208,8 @@ df2$free <- with(df, ifelse(Freedom.to.make.life.choices >= 0.5, 'Great',
                            ifelse(Freedom.to.make.life.choices >= 0.4175, 'Good',
                                   ifelse(Freedom.to.make.life.choices > 0.3032, 'Okay', 'Bad'))))
 
-# Two sample mean test (overall happiness and freedom)
+# Hypothesis (overall happiness and freedom)
 t.test(free$Score, not.free$Score)
-# Anova (overall happiness and freedom)
 free.aov <- aov(Score ~ free, data=df2)
 summary(free.aov)
 TukeyHSD(free.aov)
