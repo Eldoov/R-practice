@@ -144,16 +144,22 @@ cor.score <- as.data.frame(as.table(correlation_matrix[1,]))
 subset(cor.score, !(abs(Freq) == 1 | abs(Freq) < 0.6 ))
 
 
-### Linear Regression
+### Linear Regression & Anova table
 lm.all <- lm(Score ~ ., data = df)
 summary(lm.all)
+anova(lm.all)
 
 lm.top3 <- lm(Score ~ GDP.per.capita+Social.support+Healthy.life.expectancy, data=df)
 summary(lm.top3)
+anova(lm.top3)
+confint(lm.top3, 'GDP.per.capita', level=0.9)
+confint(lm.top3, 'Social.support', level=0.9)
+confint(lm.top3, 'Healthy.life.expectancy', level=0.9)
 
 # Single linear regression 
 lm.gdp <- lm(Score ~ GDP.per.capita)
 summary(lm.gdp)
+anova(lm.gdp)
 
 # plot linear regression between Score and Top3 factors
 plot(GDP.per.capita, Score, col='orangered', type='p')
